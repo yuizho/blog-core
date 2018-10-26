@@ -10,18 +10,14 @@ services:
       MYSQL_PASSWORD: test
       MYSQL_DATABASE: test
     volumes:
-    - mysql-data:/var/lib/mysql
+      - ./initdb.d:/docker-entrypoint-initdb.d
+      - mysql-data:/var/lib/mysql
+  # TODO: 初回起動が失敗してします。DBの初期化の関係?
   app:
-    image: openjdk:8-jdk-alpine
+    build: .
     ports:
-    - "8080:8080"
-    volumes:
-      - ./build/libs/app-0.1.0.jar:/app.jar
-      - /var/tmp/static
-    entrypoint:
-      - java
-      - -jar
-      - /app.jar
-      - --spring.profiles.active=devdocker
+      - "8080:8080"
+    depends_on:
+      - db
 volumes:
   mysql-data:
