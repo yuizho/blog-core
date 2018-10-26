@@ -1,0 +1,27 @@
+version: '3.1'
+services:
+  db:
+    image: mysql:5.7.23
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test
+      MYSQL_DATABASE: test
+    volumes:
+    - mysql-data:/var/lib/mysql
+  app:
+    image: openjdk:8-jdk-alpine
+    ports:
+    - "8080:8080"
+    volumes:
+      - ./build/libs/app-0.1.0.jar:/app.jar
+      - /var/tmp/static
+    entrypoint:
+      - java
+      - -jar
+      - /app.jar
+      - --spring.profiles.active=devdocker
+volumes:
+  mysql-data:

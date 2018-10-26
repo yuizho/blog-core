@@ -1,0 +1,78 @@
+buildscript {
+	ext {
+		kotlinVersion = '1.2.71'
+		springBootVersion = '2.0.5.RELEASE'
+	}
+	repositories {
+		mavenCentral()
+	}
+	dependencies {
+		classpath("org.springframework.boot:spring-boot-gradle-plugin:${springBootVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-allopen:${kotlinVersion}")
+		classpath("org.jetbrains.kotlin:kotlin-noarg:${kotlinVersion}")
+	}
+}
+
+apply plugin: 'kotlin'
+apply plugin: 'kotlin-spring'
+apply plugin: 'kotlin-jpa'
+apply plugin: 'eclipse'
+apply plugin: 'org.springframework.boot'
+apply plugin: 'io.spring.dependency-management'
+// To generate your own metadata in order to get these custom properties recognized by your IDE,
+// kapt should be configured with the spring-boot-configuration-processor dependency as following.
+apply plugin: 'kotlin-kapt'
+
+group = 'io.github.yuizho'
+version = '0.0.1-SNAPSHOT'
+sourceCompatibility = 1.8
+compileKotlin {
+	kotlinOptions {
+		freeCompilerArgs = ["-Xjsr305=strict"]
+		jvmTarget = "1.8"
+	}
+}
+compileTestKotlin {
+	kotlinOptions {
+		freeCompilerArgs = ["-Xjsr305=strict"]
+		jvmTarget = "1.8"
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+bootJar {
+    baseName = 'gs-spring-boot-docker'
+    version =  '0.1.0'
+}
+dependencies {
+	implementation('org.springframework.boot:spring-boot-starter-data-jpa')
+	implementation('org.springframework.boot:spring-boot-starter-web')
+	implementation('org.springframework.security:spring-security-core')
+	implementation('com.fasterxml.jackson.module:jackson-module-kotlin')
+	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
+	implementation("org.jetbrains.kotlin:kotlin-reflect")
+	runtimeOnly('com.h2database:h2')
+	kapt("org.springframework.boot:spring-boot-configuration-processor")
+	implementation("com.atlassian.commonmark:commonmark:0.11.0")
+	implementation("com.atlassian.commonmark:commonmark-ext-autolink:0.11.0")
+	// Use MySQL Connector-J
+	implementation('mysql:mysql-connector-java')
+	implementation("org.apache.commons:commons-lang3:3.8.1")
+	testImplementation('org.springframework.boot:spring-boot-starter-test') {
+		exclude module: 'junit'
+	}
+	testImplementation('org.junit.jupiter:junit-jupiter-api')
+	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
+}
+
+test {
+	useJUnitPlatform()
+}
+
+bootJar {
+	baseName = 'blog-core'
+	version =  '0.1.0'
+}
