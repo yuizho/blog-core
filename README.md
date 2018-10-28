@@ -1,4 +1,5 @@
 # Blog-Core
+[![CircleCI](https://circleci.com/gh/yuizho/blog-core/tree/master.svg?style=svg)](https://circleci.com/gh/yuizho/blog-core/tree/master)
 
 ## Getting Started
 
