@@ -8,7 +8,7 @@ import java.util.*
 import javax.persistence.*
 
 @Entity
-@JsonIgnoreProperties(value = ["expiredAt", "user", "expired"])
+@JsonIgnoreProperties(value = ["expired_at", "user", "expired"])
 data class Loggedin(
         @Id val token: Token = Token(UUID.randomUUID()),
         val expiredAt: LocalDateTime = LocalDateTime.now().plusDays(30),
@@ -18,7 +18,7 @@ data class Loggedin(
 }
 
 @Embeddable
-@JsonIgnoreProperties(value = ["scheme", "expectedScheme"])
+@JsonIgnoreProperties(value = ["scheme", "expected_scheme"])
 class Token: Serializable {
     @Transient val scheme: String
     @JsonValue val token: String
