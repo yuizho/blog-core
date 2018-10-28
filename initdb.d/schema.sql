@@ -1,7 +1,12 @@
+SET CHARSET UTF8;
+CREATE DATABASE IF NOT EXISTS test DEFAULT CHARACTER SET utf8;
+
+USE test;
+
 -- -----------------------------------------------------
 -- Table `User`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`User` (
+CREATE TABLE IF NOT EXISTS `test`.`user` (
   `id` VARCHAR(30) NOT NULL,
   `password` VARCHAR(100) NULL,
   PRIMARY KEY (`id`));
@@ -10,15 +15,15 @@ CREATE TABLE IF NOT EXISTS `test`.`User` (
 -- -----------------------------------------------------
 -- Table `Loggedin`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`Loggedin` (
+CREATE TABLE IF NOT EXISTS `test`.`loggedin` (
   `token` VARCHAR(36) NOT NULL,
   `expired_at` DATETIME NOT NULL,
-  `User_id` VARCHAR(30) NOT NULL,
+  `user_id` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`token`),
-  INDEX `fk_Loggedin_User1_idx` (`User_id` ASC),
-  CONSTRAINT `fk_Loggedin_User1`
-    FOREIGN KEY (`User_id`)
-    REFERENCES `User` (`id`)
+  INDEX `fk_loggedin_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_loggedin_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -26,18 +31,18 @@ CREATE TABLE IF NOT EXISTS `test`.`Loggedin` (
 -- -----------------------------------------------------
 -- Table `Article`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`Article` (
+CREATE TABLE IF NOT EXISTS `test`.`article` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `title` VARCHAR(250) NOT NULL,
   `content` TEXT NOT NULL,
   `added_at` DATETIME NOT NULL,
   `modified_at` DATETIME NOT NULL,
-  `User_id` VARCHAR(30) NOT NULL,
+  `user_id` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Article_User1_idx` (`User_id` ASC),
-  CONSTRAINT `fk_Article_User1`
-    FOREIGN KEY (`User_id`)
-    REFERENCES `User` (`id`)
+  INDEX `fk_article_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_article_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -45,7 +50,7 @@ CREATE TABLE IF NOT EXISTS `test`.`Article` (
 -- -----------------------------------------------------
 -- Table `Tag`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`Tag` (
+CREATE TABLE IF NOT EXISTS `test`.`tag` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `name` VARCHAR(50) NOT NULL UNIQUE,
   PRIMARY KEY (`id`));
@@ -54,20 +59,20 @@ CREATE TABLE IF NOT EXISTS `test`.`Tag` (
 -- -----------------------------------------------------
 -- Table `Article_has_Tag`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`Article_has_Tag` (
-  `Article_id` INT NOT NULL,
-  `Tag_id` INT NOT NULL,
+CREATE TABLE IF NOT EXISTS `test`.`article_has_tag` (
+  `article_id` INT NOT NULL,
+  `tag_id` INT NOT NULL,
   --  PRIMARY KEY (`Article_id`, `Tag_id`),
-  INDEX `fk_Tag_has_Article_Article1_idx` (`Article_id` ASC),
-  INDEX `fk_Tag_has_Article_Tag1_idx` (`Tag_id` ASC),
-  CONSTRAINT `fk_Tag_has_Article_Tag1`
-    FOREIGN KEY (`Tag_id`)
-    REFERENCES `Tag` (`id`)
+  INDEX `fk_tag_has_article_article1_idx` (`article_id` ASC),
+  INDEX `fk_tag_has_article_tag1_idx` (`tag_id` ASC),
+  CONSTRAINT `fk_tag_has_article_tag1`
+    FOREIGN KEY (`tag_id`)
+    REFERENCES `tag` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Tag_has_Article_Article1`
-    FOREIGN KEY (`Article_id`)
-    REFERENCES `Article` (`id`)
+  CONSTRAINT `fk_tag_has_article_article1`
+    FOREIGN KEY (`article_id`)
+    REFERENCES `article` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
 
@@ -75,15 +80,15 @@ CREATE TABLE IF NOT EXISTS `test`.`Article_has_Tag` (
 -- -----------------------------------------------------
 -- Table `Uploaded`
 -- -----------------------------------------------------
-CREATE TABLE IF NOT EXISTS `test`.`Uploaded` (
+CREATE TABLE IF NOT EXISTS `test`.`uploaded` (
   `id` INT AUTO_INCREMENT NOT NULL,
   `file_name` VARCHAR(200) NOT NULL,
   `file_uri` VARCHAR(500) NOT NULL UNIQUE,
-  `User_id` VARCHAR(30) NOT NULL,
+  `user_id` VARCHAR(30) NOT NULL,
   PRIMARY KEY (`id`),
-  INDEX `fk_Uploaded_User1_idx` (`User_id` ASC),
-  CONSTRAINT `fk_Uploaded_User1`
-    FOREIGN KEY (`User_id`)
-    REFERENCES `User` (`id`)
+  INDEX `fk_uploaded_user1_idx` (`user_id` ASC),
+  CONSTRAINT `fk_uploaded_user1`
+    FOREIGN KEY (`user_id`)
+    REFERENCES `user` (`id`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);

@@ -9,12 +9,13 @@ services:
       MYSQL_USER: test
       MYSQL_PASSWORD: test
       MYSQL_DATABASE: test
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     volumes:
-      - ./initdb.d:/docker-entrypoint-initdb.d
-      - mysql-data:/var/lib/mysql
-  # TODO: 初回起動が失敗してします。DBの初期化の関係?
+      - "./initdb.d:/docker-entrypoint-initdb.d"
+      - "mysql-data:/var/lib/mysql"
   app:
-    build: .
+    build:
+      context: .
     ports:
       - "8080:8080"
     depends_on:
