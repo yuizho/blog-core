@@ -9,19 +9,16 @@ services:
       MYSQL_USER: test
       MYSQL_PASSWORD: test
       MYSQL_DATABASE: test
+    command: mysqld --character-set-server=utf8 --collation-server=utf8_unicode_ci
     volumes:
-    - mysql-data:/var/lib/mysql
+      - "./initdb.d:/docker-entrypoint-initdb.d"
+      - "mysql-data:/var/lib/mysql"
   app:
-    image: openjdk:8-jdk-alpine
+    build:
+      context: .
     ports:
-    - "8080:8080"
-    volumes:
-      - ./build/libs/app-0.1.0.jar:/app.jar
-      - /var/tmp/static
-    entrypoint:
-      - java
-      - -jar
-      - /app.jar
-      - --spring.profiles.active=devdocker
+      - "8080:8080"
+    depends_on:
+      - db
 volumes:
   mysql-data:

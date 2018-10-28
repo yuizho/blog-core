@@ -12,7 +12,8 @@ data class Article(
         var title: Title,
         var content: Content,
         @ManyToOne @JoinColumn val user: User,
-        @Id @GeneratedValue val id: Long? = null,
+        @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+        val id: Long? = null,
         val addedAt: LocalDateTime = LocalDateTime.now(),
         var modifiedAt: LocalDateTime = LocalDateTime.now(),
         @ManyToMany
@@ -49,7 +50,8 @@ class Content(content: String) {
 
 @Entity
 data class Uploaded(
-        @Id @GeneratedValue val id: Long? = null,
+        @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+        val id: Long? = null,
         val fileName: String,
         @Column(unique = true) val fileUri: String,
         @ManyToOne @JoinColumn val user: User)
