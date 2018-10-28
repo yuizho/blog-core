@@ -12,7 +12,6 @@ data class Article(
         var title: Title,
         var content: Content,
         @ManyToOne @JoinColumn val user: User,
-        // TODO: hibernate_sequenceができてる。strategy=AUTOになってる？
         @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
         val id: Long? = null,
         val addedAt: LocalDateTime = LocalDateTime.now(),
