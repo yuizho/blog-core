@@ -17,11 +17,14 @@ interface TagRepository : CrudRepository<Tag, Long> {
     fun findByName(tags: List<String>): Iterable<Tag>
 }
 
-interface UserRepository : CrudRepository<User, String>
+interface UserRepository : CrudRepository<User, String> {
+    @Query("select u from User u where u.id = ?1")
+    fun findByAppId(id: String): User?
+}
 
 interface LoggeinRepository : CrudRepository<Loggedin, String> {
     @Modifying
-    @Query("delete from Loggedin l where l.user.id = ?1")
+    @Query("delete from Loggedin l where l.user = (select u from User u where u.id = ?1)")
     fun deleteByUser(id: String): Unit
 
     @Query("select l from Loggedin l where l.token = ?1")

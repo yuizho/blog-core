@@ -16,5 +16,5 @@ class UnauthorizedException(message: String): RuntimeException(message) {
 }
 
 @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-class SystemException(message: String): RuntimeException(message) {
+class SystemException(message: String): RuntimeException() {
 }

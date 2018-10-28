@@ -5,11 +5,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import javax.persistence.*
 
 @Entity
-@JsonIgnoreProperties(value = ["password"])
+@JsonIgnoreProperties(value = ["system_id", "password"])
 data class User(
-        @Id val id: String,
-        val password: Password) {
-}
+        @Id @GeneratedValue(strategy=GenerationType.IDENTITY)
+        val systemId: Long? = null,
+        @Column(unique = true) var id: String,
+        var password: Password)
 
 @Embeddable
 @JsonIgnoreProperties(value = ["password"])
