@@ -28,14 +28,6 @@ class BlogCoreApplication {
             userRepository.save(defaultUser)
         }
     }
-
-    @Bean
-    fun uploadServiceFactory(environment: Environment,
-                             applicationContext: ApplicationContext): UploadService =
-        // default setting is LocalUpload (LocalUploadService class)
-        // I followed this way!
-        // https://stackoverflow.com/questions/7812745/spring-qualifier-and-property-placeholder
-        applicationContext.getBean(environment.getProperty("upload.type") ?: "LocalUpload") as UploadService
 }
 
 @Configuration
@@ -54,6 +46,14 @@ class WebMvcConfig(private val localUploadProperties: LocalUploadProperties,
                 .addResourceLocations("classpath:/static/")
                 .addResourceLocations("file:///${localUploadProperties.path}")
     }
+
+    @Bean
+    fun uploadServiceFactory(environment: Environment,
+                             applicationContext: ApplicationContext): UploadService =
+        // default setting is LocalUpload (LocalUploadService class)
+        // I followed this way!
+        // https://stackoverflow.com/questions/7812745/spring-qualifier-and-property-placeholder
+        applicationContext.getBean(environment.getProperty("upload.type") ?: "LocalUpload") as UploadService
 }
 
 fun main(args: Array<String>) {

@@ -75,9 +75,11 @@ class LocalUploadService(private val repository: UploadedRepository,
     }
 }
 
-//@Service("S3Upload")
-//class S3UploadService: UploadService{u
-//    override fun handleAndStoreImage(base64File: String,
-//                                     token: String,
-//                                     builder: UriComponentsBuilder): Uploaded = Uploaded(fileName = "s3", imageUri = "via s3", user = User("test", "test"))
-//}
+@Service("S3Upload")
+class S3UploadService: UploadService{
+    override fun handleAndStoreImage(base64File: String,
+                                     token: String,
+                                     builder: UriComponentsBuilder): Uploaded {
+        throw NotImplementedError("no implementation.")
+    }
+}

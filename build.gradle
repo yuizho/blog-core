@@ -23,6 +23,7 @@ apply plugin: 'io.spring.dependency-management'
 // To generate your own metadata in order to get these custom properties recognized by your IDE,
 // kapt should be configured with the spring-boot-configuration-processor dependency as following.
 apply plugin: 'kotlin-kapt'
+apply plugin: 'jacoco'
 
 group = 'io.github.yuizho'
 version = '0.0.1-SNAPSHOT'
@@ -75,4 +76,11 @@ test {
 bootJar {
 	baseName = 'blog-core'
 	version =  '0.1.0'
+}
+
+jacocoTestReport {
+	reports {
+		xml.enabled = true
+		html.enabled = true
+	}
 }
