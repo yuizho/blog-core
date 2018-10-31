@@ -2,6 +2,11 @@ package io.github.yuizho.blog.application.controllers
 
 import io.github.yuizho.blog.domain.models.Article
 import io.github.yuizho.blog.application.services.ArticleService
+import io.github.yuizho.blog.domain.models.Content
+import org.springframework.http.HttpHeaders
+import org.springframework.http.HttpStatus
+import org.springframework.http.MediaType
+import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
 import javax.servlet.http.HttpServletResponse
 import javax.validation.constraints.NotNull
@@ -16,6 +21,20 @@ class ArticleController(private val articleService: ArticleService) {
     @GetMapping("/{id}")
     fun findOne(@PathVariable id: Long): Article
             = articleService.findOne(id)
+
+    @GetMapping("/{id}/content",
+            produces = [MediaType.TEXT_HTML_VALUE, MediaType.TEXT_PLAIN_VALUE])
+    fun findContent(@PathVariable id: Long,
+                    @RequestParam render: String?): ResponseEntity<String> {
+        val (body, mediaType) = articleService.findOne(id).content.render(render)
+        val headers = HttpHeaders().apply {
+            add("Content-Type", "$mediaType; charset=utf-8")
+            // TODO: how to add this header as default
+            add("X-Content-Type-Options", "nosniff")
+        }
+        // TODO: 文字化け issue remaining
+        return ResponseEntity(body, headers, HttpStatus.OK)
+    }
 
     @PutMapping("/{id}")
     fun modify(@PathVariable id: Long,
