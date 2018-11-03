@@ -5,11 +5,9 @@ import io.github.yuizho.blog.domain.models.*
 import io.github.yuizho.blog.infrastructure.repositories.ArticleRepository
 import io.github.yuizho.blog.infrastructure.repositories.LoggeinRepository
 import io.github.yuizho.blog.infrastructure.repositories.TagRepository
-import io.github.yuizho.blog.infrastructure.repositories.UserRepository
+import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
-import org.springframework.web.bind.annotation.RequestParam
 import javax.transaction.SystemException
-import javax.transaction.Transactional
 
 @Service("ArticleService")
 class ArticleService(private val articleRepository: ArticleRepository,
@@ -25,6 +23,9 @@ class ArticleService(private val articleRepository: ArticleRepository,
 
     fun findOne(id: Long)
             = articleRepository.findById(id).orElseThrow { NotFoundException("no target article.") }
+
+    fun findContent(id: Long, render: String?): Pair<String, MediaType>
+            = findOne(id).content.render(render)
 
     fun modify(id: Long, title: String?, content: String?, tags: List<String>?): Article {
         val article: Article
