@@ -32,7 +32,6 @@ class ArticleController(private val articleService: ArticleService) {
             // TODO: how to add this header as default
             add("X-Content-Type-Options", "nosniff")
         }
-        // TODO: 文字化け issue remaining
         return ResponseEntity(body, headers, HttpStatus.OK)
     }
 
