@@ -3,11 +3,14 @@ package io.github.yuizho.blog.domain.models
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.annotation.JsonProperty
 import com.fasterxml.jackson.annotation.JsonValue
+import io.github.gitbucket.markedj.Marked
+import io.github.gitbucket.markedj.Options
+import org.springframework.http.MediaType
 import java.time.LocalDateTime
 import javax.persistence.*
 
 @Entity
-@JsonIgnoreProperties(value = ["tags"])
+@JsonIgnoreProperties(value = ["tags", "content"])
 data class Article(
         var title: Title,
         var content: Content,
@@ -43,8 +46,23 @@ class Content(content: String) {
     @JsonValue val content: String
 
     init {
-        // TODO: do sanitizing or something
         this.content = content
+    }
+
+    fun renderAsHtml(): String {
+        val options = Options().apply {
+            isSanitize = true
+        }
+        return Marked.marked(content, options)
+    }
+
+    fun renderAsMarkdown(): String {
+        return content;
+    }
+
+    fun render(renderType: String?): Pair<String, MediaType> = when(renderType) {
+        "html" -> Pair(renderAsHtml(), MediaType.TEXT_HTML)
+        else -> Pair(renderAsMarkdown(), MediaType.TEXT_PLAIN)
     }
 }
 
