@@ -65,6 +65,7 @@ dependencies {
 		exclude module: 'junit'
 	}
 	testImplementation('org.junit.jupiter:junit-jupiter-api')
+	testImplementation('com.nhaarman:mockito-kotlin:1.5.0')
 	testRuntimeOnly('org.junit.jupiter:junit-jupiter-engine')
 }
 
