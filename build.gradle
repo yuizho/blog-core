@@ -61,6 +61,7 @@ dependencies {
 	implementation('mysql:mysql-connector-java')
 	implementation("org.apache.commons:commons-lang3:3.8.1")
 	implementation("io.github.gitbucket:markedj:1.0.15")
+	implementation("com.amazonaws:aws-java-sdk-s3:1.11.442")
 	testImplementation('org.springframework.boot:spring-boot-starter-test') {
 		exclude module: 'junit'
 	}
