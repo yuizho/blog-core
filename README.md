@@ -27,6 +27,18 @@ java -Dupload.type=LocalUpload -jar build/libs/blog-core-0.1.0.jar
 #### S3 Upload
 upload the image to Amazon S3.
 
+configure S3 information as environment variable
+
+```bash
+export S3_ACCESS_KEY="<your access key>"
+export S3_SECRET_KEY="<your secret key>"
+export S3_END_POINT="<your S3's endpoint>"
+export S3_REGION="<your S3's region name>"
+export S3_BUCKET_NAME="<your S3's bucket name>"
+```
+
+then you can launch blog-core server as S3Upload mode
+
 ```bash
 # S3 Upload
 java -Dupload.type=S3Upload -jar build/libs/blog-core-0.1.0.jar
