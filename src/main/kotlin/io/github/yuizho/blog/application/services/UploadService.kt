@@ -20,7 +20,6 @@ import io.github.yuizho.blog.infrastructure.LocalFileIO
 import io.github.yuizho.blog.infrastructure.repositories.LoggeinRepository
 import io.github.yuizho.blog.infrastructure.repositories.UploadedRepository
 import org.apache.commons.lang3.RandomStringUtils
-import org.springframework.core.env.Environment
 import org.springframework.stereotype.Service
 import org.springframework.web.util.UriComponentsBuilder
 import java.awt.image.BufferedImage
@@ -35,8 +34,7 @@ import javax.transaction.Transactional
 
 interface UploadService {
     fun handleAndStoreImage(base64File: String,
-                            token: String,
-                            builder: UriComponentsBuilder): Uploaded
+                            token: String): Uploaded
     fun generateFileName(imageFormat: String): String =
             LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSS")) +
                     RandomStringUtils.randomAlphanumeric(10) +
@@ -64,8 +62,7 @@ class LocalUploadService(private val repository: UploadedRepository,
 
     @Transactional
     override fun handleAndStoreImage(base64File: String,
-                                     token: String,
-                            builder: UriComponentsBuilder): Uploaded {
+                                     token: String): Uploaded {
         // https://www.netmarvs.com/archives/1113
         val handledImage
                 = convertBase64ToBinaryImage(base64File, uploadProperties.maxfilesize.toInt(), uploadProperties.format)
@@ -74,7 +71,7 @@ class LocalUploadService(private val repository: UploadedRepository,
 
         // store the uploaded file information
         val user = loggedinRepository.findByToken(Token(token))?.user ?: throw SystemException("there is no required loggein record")
-        val imageUri = builder.path("/${localUploadProperties.pathpattern}/").path("${fileName}").build().toUriString()
+        val imageUri = UriComponentsBuilder.newInstance().path("/${localUploadProperties.pathpattern}/").path("${fileName}").build().toUriString()
         val uploaded = repository.save(Uploaded(fileName = fileName, fileUri = imageUri, user = user))
 
         // store the file
@@ -99,8 +96,7 @@ class S3UploadService(private val repository: UploadedRepository,
 
     @Transactional
     override fun handleAndStoreImage(base64File: String,
-                                     token: String,
-                                     builder: UriComponentsBuilder): Uploaded {
+                                     token: String): Uploaded {
         if (S3_ACCESS_KEY == null ||
             S3_SECRET_KEY == null ||
             S3_END_POINT == null ||
