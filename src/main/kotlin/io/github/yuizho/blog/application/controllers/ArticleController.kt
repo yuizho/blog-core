@@ -13,14 +13,17 @@ import javax.validation.constraints.NotNull
 @RestController
 @RequestMapping("/api/articles")
 class ArticleController(private val articleService: ArticleService) {
+    @CrossOrigin
     @GetMapping("")
     fun findAll(@RequestParam tags: List<String>?): Iterable<Article>
             = articleService.findAll(tags)
 
+    @CrossOrigin
     @GetMapping("/{id}")
     fun findOne(@PathVariable id: Long): Article
             = articleService.findOne(id)
 
+    @CrossOrigin
     @GetMapping("/{id}/content",
             produces = [MediaType.TEXT_HTML_VALUE, MediaType.TEXT_PLAIN_VALUE])
     fun findContent(@PathVariable id: Long,
