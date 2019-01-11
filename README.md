@@ -9,6 +9,8 @@
 ## Testing
 
 ## Notes
+### How to
+
 ### How to configure image upload mode.
 this blog has two types image upload mode.
 you can configure the upload mode with system parameter.
@@ -43,5 +45,3 @@ then you can launch blog-core server as S3Upload mode
 # S3 Upload
 java -Dupload.type=S3Upload -jar build/libs/blog-core-0.1.0.jar
 ```
-
-## How to configure CORS
