@@ -3,13 +3,23 @@
 [![codecov](https://codecov.io/gh/yuizho/blog-core/branch/master/graph/badge.svg)](https://codecov.io/gh/yuizho/blog-core)
 
 ## Getting Started
+```bash
+$ ./gradlew bootJar
+$ docker-compose up --build
+```
 
 ## API Documentation
-
-## Testing
+TODO
 
 ## Notes
-### How to
+### Database configuration for Production
+set these environment variables.
+
+```bash
+export spring.datasource.url=<database url>
+export spring.datasource.username=<database username>
+export spring.datasource.password=<database password>
+```
 
 ### How to configure image upload mode.
 this blog has two types image upload mode.
