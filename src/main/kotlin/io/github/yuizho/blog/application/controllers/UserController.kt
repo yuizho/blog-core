@@ -28,4 +28,11 @@ class UserController(
                  @NotNull @RequestHeader(value = "Authorization") token: String): User {
         return loginService.modifyUser(id, sentPass, token)
     }
+
+    @PutMapping("password")
+    fun modifyPassword(@RequestParam(value="current_password") currentPassword: String,
+                   @RequestParam(value="new_password") newPassword: String,
+                   @NotNull @RequestHeader(value = "Authorization") token: String): User {
+        return loginService.modifyPassword(currentPassword, newPassword, token)
+    }
 }

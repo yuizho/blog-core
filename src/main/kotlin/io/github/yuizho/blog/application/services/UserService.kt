@@ -42,4 +42,15 @@ class LoginService(private val repository: UserRepository,
         sentPass?.let { user.password = Password(sentPass) }
         return repository.save(user)
     }
+
+    fun modifyPassword(currentPassword: String, newPassword: String, token: String): User {
+        val loggedin: Loggedin = loggeinRepository.findByToken(Token(token))
+                ?: throw SystemException("the token should have been authorized. it's provably programing bug.")
+        val user: User = loggedin.user;
+        if (!user.password.isSameAs(currentPassword)) {
+            throw BadRequestException("authentication failed (wrong password).")
+        }
+        user.password = Password(newPassword)
+        return repository.save(user)
+    }
 }
