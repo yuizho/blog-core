@@ -13,7 +13,10 @@ class AuthenticationInterceptor(private val loggeinRepository: LoggeinRepository
     override fun preHandle(request: HttpServletRequest, response: HttpServletResponse, handler: Any): Boolean {
         // when method is GET, don't need to authenticate.
         // because this APP's GET API doesn't affect table data.
-        if ("GET".equals(request.method, true)) {
+        // and also OPTIONS is also don't need to check.
+        // because it's just for pre flight request of CORS.
+        // https://developer.mozilla.org/ja/docs/Web/HTTP/Methods/OPTIONS
+        if ("GET".equals(request.method, true) || "OPTIONS".equals(request.method, true)) {
             return true;
         }
         // fetch Authorization header to get access token
