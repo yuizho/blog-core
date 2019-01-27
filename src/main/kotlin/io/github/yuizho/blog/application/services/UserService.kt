@@ -30,10 +30,14 @@ class LoginService(private val repository: UserRepository,
         }
     }
 
-    fun modifyUser(id: String?, sentPass: String?, token: String): User {
+    fun findUser(token: String): User {
         val loggedin: Loggedin = loggeinRepository.findByToken(Token(token))
                 ?: throw SystemException("the token should have been authorized. it's provably programing bug.")
-        val user = loggedin.user;
+        return loggedin.user
+    }
+
+    fun modifyUser(id: String?, sentPass: String?, token: String): User {
+        val user = findUser(token)
         id?.let { i ->
             if (repository.findByAppId(i) != null)
                 throw BadRequestException("the id is already used.")
@@ -44,9 +48,7 @@ class LoginService(private val repository: UserRepository,
     }
 
     fun modifyPassword(currentPassword: String, newPassword: String, token: String): User {
-        val loggedin: Loggedin = loggeinRepository.findByToken(Token(token))
-                ?: throw SystemException("the token should have been authorized. it's provably programing bug.")
-        val user: User = loggedin.user;
+        val user: User = findUser(token)
         if (!user.password.isSameAs(currentPassword)) {
             throw BadRequestException("authentication failed (wrong password).")
         }
