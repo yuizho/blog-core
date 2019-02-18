@@ -22,6 +22,12 @@ class UserController(
         loginService.logout(token)
     }
 
+    @CrossOrigin
+    @GetMapping("")
+    fun findUser(@NotNull @RequestHeader(value = "Authorization") token: String): User {
+        return loginService.findUser(token)
+    }
+
     @PutMapping("")
     fun modifyUser(@RequestParam(value="id") id: String?,
                  @RequestParam(value="password") sentPass: String?,
