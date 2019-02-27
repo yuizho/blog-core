@@ -1,1 +1,1 @@
-web: java -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/*.jar --spring.profiles.active=production
+web: java -Dupload.type=S3Upload -Dserver.port=$PORT $JAVA_OPTS -jar build/libs/*.jar --spring.profiles.active=production
