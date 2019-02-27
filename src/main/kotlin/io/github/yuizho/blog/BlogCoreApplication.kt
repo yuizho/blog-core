@@ -31,7 +31,8 @@ class BlogCoreApplication {
 }
 
 @Configuration
-class WebMvcConfig(private val localUploadProperties: LocalUploadProperties,
+class WebMvcConfig(private val environment: Environment,
+                   private val localUploadProperties: LocalUploadProperties,
                    private val loggeinRepository: LoggeinRepository): WebMvcConfigurer {
     override fun addInterceptors(registry: InterceptorRegistry) {
         registry.addInterceptor(CsrfFilterInterceptor())
@@ -42,14 +43,16 @@ class WebMvcConfig(private val localUploadProperties: LocalUploadProperties,
     }
 
     override fun addResourceHandlers(registry: ResourceHandlerRegistry): Unit {
-        registry.addResourceHandler("/static/**")
+        val uploadType: String = environment.getProperty("upload.type") ?: "LocalUpload"
+        val resourceHandlerRegistry = registry.addResourceHandler("/static/**")
                 .addResourceLocations("classpath:/static/")
-                .addResourceLocations("file:///${localUploadProperties.path}")
+        if (uploadType.equals("LocalUpload")) {
+            resourceHandlerRegistry.addResourceLocations("file:///${localUploadProperties.path}")
+        }
     }
 
     @Bean
-    fun uploadServiceFactory(environment: Environment,
-                             applicationContext: ApplicationContext): UploadService =
+    fun uploadServiceFactory(applicationContext: ApplicationContext): UploadService =
         // default setting is LocalUpload (LocalUploadService class)
         // I followed this way!
         // https://stackoverflow.com/questions/7812745/spring-qualifier-and-property-placeholder
