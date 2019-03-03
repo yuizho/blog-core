@@ -18,7 +18,7 @@ class ArticleService(private val articleRepository: ArticleRepository,
         if (tags?.isEmpty() ?: true) {
             return articleRepository.findAllByOrderByAddedAtDesc()
         }
-        return articleRepository.findByTag(tags!!)
+        return articleRepository.findByTagOrderByAddedAtDesc(tags!!)
     }
 
     fun findOne(id: Long)
