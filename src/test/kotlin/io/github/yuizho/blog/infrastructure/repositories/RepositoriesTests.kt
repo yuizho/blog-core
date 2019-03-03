@@ -21,7 +21,7 @@ class RepositoriesTests(@Autowired val entityManager: TestEntityManager,
     fun `findBytag returns expected multiple Articles`() {
         val (article1, article2) = persistTestArticleData()
 
-        var actual = articleRepository.findByTag(listOf("python"))
+        var actual = articleRepository.findByTagOrderByAddedAtDesc(listOf("python"))
 
         assertThat(actual).contains(article1).contains(article2)
     }
@@ -30,7 +30,7 @@ class RepositoriesTests(@Autowired val entityManager: TestEntityManager,
     fun `findBytag returns expected single Articles`() {
         val (article1, article2) = persistTestArticleData()
 
-        var actual = articleRepository.findByTag(listOf("ruby"))
+        var actual = articleRepository.findByTagOrderByAddedAtDesc(listOf("ruby"))
 
         assertThat(actual).hasSize(1).contains(article1)
     }
@@ -39,7 +39,7 @@ class RepositoriesTests(@Autowired val entityManager: TestEntityManager,
     fun `findBytag with multiple tag returns expected Articles`() {
         val (article1, article2) = persistTestArticleData()
 
-        var actual = articleRepository.findByTag(listOf("python", "ruby"))
+        var actual = articleRepository.findByTagOrderByAddedAtDesc(listOf("python", "ruby"))
 
         assertThat(actual).hasSize(2).contains(article1).contains(article2)
     }

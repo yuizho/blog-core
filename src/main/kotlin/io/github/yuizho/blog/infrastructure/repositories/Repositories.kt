@@ -8,8 +8,8 @@ import org.springframework.data.repository.CrudRepository
 interface ArticleRepository : CrudRepository<Article, Long> {
     fun findAllByOrderByAddedAtDesc(): Iterable<Article>
 
-    @Query("select distinct a from Article a join a.tags t where t.name in ?1")
-    fun findByTag(tags: List<String>): Iterable<Article>
+    @Query("select distinct a from Article a join a.tags t where t.name in ?1 order by a.addedAt desc")
+    fun findByTagOrderByAddedAtDesc(tags: List<String>): Iterable<Article>
 }
 
 interface TagRepository : CrudRepository<Tag, Long> {
