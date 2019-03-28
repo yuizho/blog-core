@@ -96,7 +96,9 @@ jobs:
           name: git commit and push to origin/heroku
           command: |
             cd ~/repo/frontend
+            git status
             git checkout -- .
+            git status
             cd ~/repo
             if [ -n "$(git status --porcelain)" ]; then
               echo 'start commit and push'
