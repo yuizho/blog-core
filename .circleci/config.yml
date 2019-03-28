@@ -43,9 +43,6 @@ jobs:
         command: bash <(curl -s https://codecov.io/bash)
 
   build-front:
-    filters:
-      branches:
-        only: master
     docker:
       # specify the version you desire here
       - image: circleci/node:11
@@ -113,3 +110,6 @@ workflows:
       - build-front:
           requires:
             - java-test
+          filters:
+            branches:
+              only: master
