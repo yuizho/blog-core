@@ -92,8 +92,10 @@ jobs:
             rm -r public
             cp -r frontend/dist public
       - run:
+          # https://qiita.com/kota-miyasaka/items/b15336b3b91cf6386cab
           name: git commit and push to origin/heroku
           command: |
+            git checkout -- .
             if [ -n "$(git status --porcelain)" ]; then
               echo 'start commit and push'
               git add -A
