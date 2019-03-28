@@ -54,7 +54,8 @@ class ArticleService(private val articleRepository: ArticleRepository,
     }
 
     private fun saveAndReturnRegisteredTags(tags: List<String>?): List<Tag> {
-        val alreadyRegisteredTags = tags?.let { tagRepository.findByName(it) } ?: emptyList()
+        val alreadyRegisteredTags =
+                if (tags == null || tags.isEmpty()) emptyList() else tagRepository.findByName(tags)
         val needToRegisterTagNames = (tags ?: emptyList()).minus(alreadyRegisteredTags.map { t -> t.name })
         val needToRegisterTags = needToRegisterTagNames.map { tagName -> Tag(name = tagName) }
         val registeredTags
