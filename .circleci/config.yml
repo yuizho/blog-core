@@ -87,7 +87,6 @@ jobs:
           command: |
             git config user.email "yuizho3@gmail.com"
             git config user.name "yuizho-circleci"
-            git fetch
             git checkout -b heroku origin/heroku
             git merge --no-edit master
             rm -r public
