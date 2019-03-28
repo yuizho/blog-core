@@ -88,7 +88,7 @@ jobs:
             git config user.name "yuizho-circleci"
             git fetch
             git checkout -b heroku origin/heroku
-            cd ~/repo
+            git merge master
             rm -r public
             cp -r frontend/dist public
       - run:
