@@ -100,7 +100,7 @@ jobs:
           name: remove untracked file (yarn.lock) in frontend folder
           command: |
             cd ~/repo/frontend
-            git reset --hard HEAD
+            rm yarn.lock
       - run:
           name: git commit and push to origin/heroku
           command: |
