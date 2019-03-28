@@ -81,25 +81,29 @@ jobs:
             yarn run prod
 
       # commit & push to heroku branch
-      # heroku branch is deployed to production heroku env by heroku feature finally
       - run:
-          name: configure git account, prepare heroku branch, copy frontend resources
+          name: configure git account
           command: |
             git config user.email "yuizho3@gmail.com"
             git config user.name "yuizho-circleci"
+      - run:
+          name: prepare heroku branch
+          command: |
             git checkout -b heroku origin/heroku
             git merge --no-edit master
+      - run:
+          name: copy frontend resources
+          command: |
             rm -r public
             cp -r frontend/dist public
       - run:
-          # https://qiita.com/kota-miyasaka/items/b15336b3b91cf6386cab
-          name: git commit and push to origin/heroku
+          name: remove untracked file (yarn.lock) in frontend folder
           command: |
             cd ~/repo/frontend
-            git status
-            git checkout -- .
-            git status
-            cd ~/repo
+            git reset --hard HEAD
+      - run:
+          name: git commit and push to origin/heroku
+          command: |
             if [ -n "$(git status --porcelain)" ]; then
               echo 'start commit and push'
               git add -A
