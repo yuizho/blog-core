@@ -5,6 +5,9 @@ import io.github.yuizho.blog.domain.models.*
 import io.github.yuizho.blog.infrastructure.repositories.ArticleRepository
 import io.github.yuizho.blog.infrastructure.repositories.LoggeinRepository
 import io.github.yuizho.blog.infrastructure.repositories.TagRepository
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.CachePut
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.http.MediaType
 import org.springframework.stereotype.Service
 import javax.transaction.SystemException
@@ -21,12 +24,14 @@ class ArticleService(private val articleRepository: ArticleRepository,
         return articleRepository.findByTagOrderByAddedAtDesc(tags!!)
     }
 
+    @Cacheable("ArticleCache")
     fun findOne(id: Long)
             = articleRepository.findById(id).orElseThrow { NotFoundException("no target article.") }
 
     fun findContent(id: Long, render: String?): Pair<String, MediaType>
             = findOne(id).content.render(render)
 
+    @CachePut(cacheNames = ["ArticleCache"], key = "#id")
     fun modify(id: Long, title: String?, content: String?, tags: List<String>?): Article {
         val article: Article
                 = articleRepository.findById(id).orElseThrow { NotFoundException("no target article.") }
@@ -39,6 +44,7 @@ class ArticleService(private val articleRepository: ArticleRepository,
         return article
     }
 
+    @CacheEvict(cacheNames = ["ArticleCache"], key = "#id")
     fun delete(id: Long): Unit = articleRepository.deleteById(id)
 
     fun create(title: String, content: String, token: String, tags: List<String>?): Article {
